@@ -1,0 +1,109 @@
+/* 全局容器：柔粉渐变背景 居中布局 */
+.login-container {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+	position: relative;
+	overflow: hidden;
+	padding: 20px;
+}
+
+/* 登录卡片：半透明白色 圆角阴影 层次感 */
+.login-card {
+	width: 100%;
+	max-width: 420px;
+	background: rgba(255, 255, 255, 0.92);
+	border-radius: 24px;
+	padding: 40px 35px;
+	box-shadow: 0 8px 32px rgba(248, 159, 201, 0.2);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	animation: cardUp 0.8s ease-out;
+	position: relative;
+	z-index: 10;
+}
+
+/* 线性插画容器 */
+.illustration {
+	text-align: center;
+	margin-bottom: 20px;
+}
+.illustration svg {
+	width: 180px;
+	height: auto;
+}
+
+/* 标题 */
+.title {
+	text-align: center;
+	font-size: 24px;
+	color: #666;
+	margin-bottom: 30px;
+	font-weight: 500;
+}
+
+/* 表单样式 */
+.login-form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+/* 输入框组 */
+.input-group {
+	position: relative;
+}
+
+/* 输入框：简约风格 聚焦动效 */
+.input-item {
+	width: 100%;
+	height: 50px;
+	padding: 0 18px;
+	border: 2px solid #f5f5f5;
+	border-radius: 12px;
+	font-size: 15px;
+	color: #333;
+	outline: none;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+}
+.input-item:focus {
+	border-color: #f89fc9;
+	box-shadow: 0 0 8px rgba(248, 159, 201, 0.2);
+	transform: scale(1.02);
+}
+.input-item::placeholder {
+	color: #ccc;
+	user-select: none;
+}
+
+/* 登录按钮：粉嫩渐变 交互动效 */
+.login-btn {
+	height: 52px;
+	border-radius: 12px;
+	border: none;
+	background: linear-gradient(135deg, #f89fc9 0%, #fbc2eb 100%);
+	color: white;
+	font-size: 16px;
+	font-weight: 500;
+	user-select: none;
+	cursor: default;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 15px rgba(248, 159, 201, 0.3);
+}
+.login-btn:hover:not(:disabled) {
+	transform: translateY(-3px);
+	box-shadow: 0 6px 20px rgba(248, 159, 201, 0.4);
+}
+.login-btn:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+/* 卡片入场动画 */
+@keyframes cardUp {
+	0% { opacity: 0; transform: translateY(30px); }
+	100% { opacity: 1; transform: translateY(0); }
+}

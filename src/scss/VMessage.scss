@@ -1,0 +1,72 @@
+/* 优化版消息提示样式（仿ElementPlus原生风格） */
+.message-wrapper {
+  position: fixed;
+  top: 70px; /* 离导航栏留一点间距，不贴死 */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 提示之间的间距 */
+}
+
+.message-box {
+  min-width: 300px;
+  max-width: 400px; /* 限制最大宽度，避免超长提示撑得太宽 */
+  padding: 14px 16px; /* 紧凑内边距，不再又扁又宽 */
+  border-radius: 4px; /* ElementPlus标准圆角，不突兀 */
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 图标和文字的间距 */
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 柔和阴影，不抢戏 */
+  animation: messageFadeIn 0.3s ease forwards;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.message-box svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.message-text {
+  flex: 1;
+  text-align: left; /* 文字左对齐，更自然 */
+}
+
+/* 成功提示：淡绿背景+绿色文字/图标 */
+.message-success {
+  background: #f0f9eb;
+  color: #67c23a;
+}
+
+/* 错误提示：淡红背景+红色文字/图标 */
+.message-error {
+  background: #fef0f0;
+  color: #f56c6c;
+}
+
+/* 优化动画，更流畅 */
+@keyframes messageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes messageFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}

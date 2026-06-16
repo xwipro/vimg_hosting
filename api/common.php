@@ -100,3 +100,77 @@ function create_jwt($uid)
     $base64_sign = str_replace("=", "", base64_encode($signature));
     return $base64_header . "." . $base64_payload . "." . $base64_sign;
 }
+
+// 获取ip
+function get_ip() {
+    if(!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+        $ip_list = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        return trim($ip_list[0]);
+    }
+
+    if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
+        return $_SERVER['HTTP_X_REAL_IP'];
+    }
+
+    // 无代理直连兜底
+    $ip = $_SERVER['REMOTE_ADDR'];
+    return $ip === '::1' ? '127.0.0.1' : $ip;
+}
+
+// 获取省市
+function get_area($ip) {
+    if (in_array($ip, ['127.0.0.1', '::1']) || preg_match('/^(192\.168|10\.|172\.1[6-9]\.|172\.2[0-9]\.|172\.3[0-1]\.)/', $ip)) {
+        return [
+            "country" => "中国",
+            "province" => "局域网",
+            "city" => "",
+            "district" => "",
+            "isp" => "本地内网",
+            "big_area" => ""
+        ];
+    }
+
+    $url = "https://ip9.com.cn/get?ip={$ip}";
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    $res = curl_exec($ch);
+    curl_close($ch);
+
+    if ($res === false) {
+        return [
+            "country" => "未知",
+            "province" => "地址查询失败",
+            "city" => "",
+            "district" => "",
+            "isp" => "",
+            "big_area" => ""
+        ];
+    }
+
+    $apiData = json_decode($res, true);
+    if (!isset($apiData['ret']) || $apiData['ret'] !== 200 || empty($apiData['data'])) {
+        return [
+            "country" => "未知",
+            "province" => "接口数据异常",
+            "city" => "",
+            "district" => "",
+            "isp" => "",
+            "big_area" => ""
+        ];
+    }
+
+    $d = $apiData['data'];
+    return [
+        "country"    => $d['country'] ?? "",
+        "province"   => $d['prov'] ?? "",
+        "city"       => $d['city'] ?? "",
+        "district"   => $d['area'] ?? "",
+        "isp"        => $d['isp'] ?? "",
+        "big_area"   => $d['big_area'] ?? ""
+    ];
+}
+
+
